@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+// import validator from "validator"
 
 const Signup = () => {
 
@@ -17,7 +18,14 @@ const Signup = () => {
 
     const changeHandler = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
+
+
+
     };
+
+
+
+
 
     const signUpHandler = async () => {
         try {
@@ -30,10 +38,16 @@ const Signup = () => {
                     },
                     withCredentials: true,
                 }
+
             );
+            if (!user.email.includes("@") || !user.email.includes(".")) {
+                toast.error("Invalid email format");
+                return;
+            }
+
             if (res.data.success) {
                 toast.success(res.data.message);
-                navigate("/");
+                navigate("/login");
                 // if(res.data.success){
                 // alert(res.data.message)
 
@@ -63,6 +77,7 @@ const Signup = () => {
                     onChange={changeHandler}
                     type="email"
                     placeholder="Email"
+                    required
                 />
 
                 <Input
